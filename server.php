@@ -36,6 +36,15 @@ while (true) {
 		socket_getpeername($socket_new, $ip); //get ip address of connected socket
 		$response = mask(json_encode(array('type'=>'system', 'message'=>$ip.' connected'))); //prepare json data
 		send_systemMessage($response); //notify all users about new connection
+
+
+		/*Codigo de prueba || no funciono xd
+		foreach ($clients as $socket_list) {
+			socket_getpeername($socket_list, $ip);
+			$list = $list."|".$ip;
+			$allClients = mask(json_encode(array('type'=>'allUsers', 'message'=>$list)));
+			send_systemMessage($allClients);
+		}*/
 		
 		//make room for new socket
 		$found_socket = array_search($socket, $changed);

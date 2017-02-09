@@ -9,9 +9,20 @@
 }
 
 .users{
-	width: 10%;
-	height:70%;
+	position: absolute;
+	width: 200px;
+	height:500px;
+	background-color: yellow;
+	display: inline-block;
 }
+
+.listUsers{
+	width: 200px;
+	height: 30px;
+	background-color: red;
+	position:relative;
+}
+
 
 .button {
     background-color: #4CAF50;
@@ -63,7 +74,7 @@ input[type=text]{
     /* For mobile phones: */
     .chat_wrapper {
         width: 95%;
-	height: 40%;
+		height: 40%;
 	}
     
 
@@ -98,10 +109,6 @@ else
 
 <script language="javascript" type="text/javascript">  
 $(document).ready(function(){
-	//create a new WebSocket object.
-	var wsUri = "ws://192.168.17.135:9000/server.php"; 	
-	websocket = new WebSocket(wsUri); 
-
 	//Obtiene la direccion ip local
 	var myIP = 0;
 	window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;   //compatibility for firefox and chrome
@@ -111,8 +118,18 @@ $(document).ready(function(){
 	pc.onicecandidate = function(ice){  //listen for candidate events
 		if(!ice || !ice.candidate || !ice.candidate.candidate)  return;
 		myIP = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1];
-		pc.onicecandidate = noop;
+		pc.onicecandidate = noop;	
+		$(".listUsers").attr('id',myIP).remove();	 
 	};
+
+	//create a new WebSocket object.
+	var wsUri = "ws://192.168.0.4:9000/server.php"; 	
+	websocket = new WebSocket(wsUri);
+
+	$(".users").click(function(){
+		var id = $(this).attr("id");
+		alert(id);
+	});
 	
 	websocket.onopen = function(ev) { // connection is open 
 		$('#message_box').append("<div class=\"system_msg\">Connected!</div>"); //notify users
@@ -157,6 +174,7 @@ $(document).ready(function(){
 		var destino = msg.destinatary;
 		var remitente = msg.remitent;
 
+
 		if(type == 'usermsg') 
 		{
 			if(destino == myIP || myIP == remitente )
@@ -165,15 +183,26 @@ $(document).ready(function(){
 		if(type == 'system')
 		{
 			$('#message_box').append("<div class=\"system_msg\">"+umsg+"</div>");
-			var ip = umsg.replace('connected', '');
-			//$('#users').append("<p>"+ip+"</p>");
-		}
+			if(umsg.search("disconnected") == -1){
+				var ip = umsg.replace('connected', '');
+				var listUsers = $('<div>').attr('class','listUsers').attr('id',ip).append(ip);
+				$('.users').attr('id','users').append(listUsers);
+			}else{
+				var ip = umsg.replace('disconnected', '');
+				$(".listUsers").attr('id',ip).remove();
+			}			
+		}/** codigo de prueba || no funciono xd
+		if(type == 'allUsers'){
+			alert(umsg);
+		}*/
 		
 		$('#message').val(''); //reset text
 		
 		var objDiv = document.getElementById("message_box");
 		objDiv.scrollTop = objDiv.scrollHeight;
 	};
+
+	
 	
 	websocket.onerror	= function(ev){$('#message_box').append("<div class=\"system_error\">Error Occurred - "+ev.data+"</div>");}; 
 	websocket.onclose 	= function(ev){$('#message_box').append("<div class=\"system_msg\">Connection Closed</div>");}; 
@@ -183,9 +212,7 @@ $(document).ready(function(){
 
 
 </script>
-<div class="users" id="users">
-
-</div>
+<div class="users"></div>
 <div class="chat_wrapper">
 	<div class="message_box" id="message_box"></div>
 		<div class="panel">
