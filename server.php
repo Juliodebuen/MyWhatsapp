@@ -2,6 +2,7 @@
 $host = 'localhost'; //host
 $port = '9000'; //port
 $null = NULL; //null var
+session_start();
 
 //Create TCP/IP sream socket
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
@@ -16,6 +17,8 @@ socket_listen($socket);
 
 //create & add listning socket to the list
 $clients = array($socket);
+
+$_SESSION['listClients'] = "clients";
 
 ini_set('max_execution_time', 5000);
 //start endless loop, so that our script doesn't stop

@@ -12,7 +12,7 @@
 	position: absolute;
 	width: 200px;
 	height:500px;
-	background-color: yellow;
+	/*background-color: yellow;*/
 	display: inline-block;
 }
 
@@ -101,6 +101,11 @@ if(isset($_POST['nUser']))
 	$nUsuario = $_POST['nUser'];
 else
 	echo '<script> window.location = "/Chat/Index.php"; </script>';
+
+//session_start();
+//if(isset($_SESSION['listClients'])){
+//	echo $_SESSION['listClients'];
+//}
 ?>
 
 
@@ -110,6 +115,7 @@ else
 <script language="javascript" type="text/javascript">  
 $(document).ready(function(){
 	//Obtiene la direccion ip local
+	
 	var myIP = 0;
 	window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;   //compatibility for firefox and chrome
 	var pc = new RTCPeerConnection({iceServers:[]}), noop = function(){};      
@@ -123,18 +129,18 @@ $(document).ready(function(){
 	};
 
 	//create a new WebSocket object.
-	var wsUri = "ws://192.168.0.4:9000/server.php"; 	
+	var wsUri = "ws://192.168.0.6:9000/server.php"; 	
 	websocket = new WebSocket(wsUri);
 
-	$(".users").click(function(){
+	/*$(".users").click(function(){
 		var id = $(this).attr("id");
 		alert(id);
-	});
+	});*/
 	
 	websocket.onopen = function(ev) { // connection is open 
 		$('#message_box').append("<div class=\"system_msg\">Connected!</div>"); //notify users
 	}
-
+/*
 	$('#send-btn').click(function(){ //use clicks message send button	
 		var mymessage = $('#message').val(); //get message text
 		var myname = '<?php echo $nUsuario; ?>';
@@ -162,7 +168,7 @@ $(document).ready(function(){
 		};
 		//convert and send data to server
 		websocket.send(JSON.stringify(msg));
-	});
+	});*/
 	
 	//#### Message received from server?
 	websocket.onmessage = function(ev) {
@@ -173,44 +179,146 @@ $(document).ready(function(){
 		var ucolor = msg.color; //color
 		var destino = msg.destinatary;
 		var remitente = msg.remitent;
-
+		/*<?php if(isset($_SESSION['listClients'])){ ?>
+			alert("<?php echo $_SESSION['listClients']; ?>");
+		<?php } ?>*/
 
 		if(type == 'usermsg') 
 		{
-			if(destino == myIP || myIP == remitente )
-				$('#message_box').append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+remitente+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
+			if(myIP == remitente){
+				var mbox = document.getElementById('message_box'+destino);
+				alert("destino "+destino);
+				$(mbox).append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
+				//$('#message_box').append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+remitente+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
+			}if(destino == myIP){				
+
+
+				var ventanaChat = $('<div>').attr('class', 'chat_wrapper').append(
+					$('<div>').attr('class', 'message_box').attr('id', 'message_box'+remitente)
+				).append(
+					$('<div>').attr('class','panel').append(
+						$('<input>').attr('type', 'text').attr('name','Destinatario').attr('id','destino'+remitente).attr('placeholder','Direccion ip destino')
+					).append(
+						$('<input>').attr('type', 'text').attr('name','message').attr('id','message'+remitente).attr('placeholder','Mensaje').attr('maxlength', '80')
+					).append(
+						$('<input>').attr('type','button').attr('id','send-btn').attr('class', 'button').attr('value','Enviar').click(function(){
+							var mymessage = document.getElementById('message'+remitente).value; //$('#message'+ip).val(); //get message text
+							var myname = '<?php echo $nUsuario; ?>';
+							var destino = document.getElementById('destino'+remitente).value; //$('#destino'+ip).val(); //get user name
+							//alert(destino);
+							if(myname == ""){ //empty name?
+								alert("Enter your Name please!");
+								return;
+							}
+							if(mymessage == ""){ //emtpy message?
+								alert("Enter Some message Please!");
+								return;
+							}
+							//document.getElementById("destino").style.visibility = "hidden";
+							var objDiv = document.getElementById("message_box"+remitente);
+							objDiv.scrollTop = objDiv.scrollHeight;
+							//prepare json data
+							var msg = {
+								message: mymessage,
+								name: myname,
+								destinatary: destino,
+								remitent: myIP,
+								color : '<?php echo $colours[$user_colour]; ?>'
+							};
+							//convert and send data to server
+							websocket.send(JSON.stringify(msg));
+							})
+					)
+				);
+				$('.chat_wrapper').hide();
+				if(document.getElementById('c'+remitente) != null){
+					document.getElementById('c'+remitente).style.display = 'block';
+				}else{
+					$('body').append(ventanaChat.attr('id','c'+remitente));
+					document.getElementById('destino'+remitente).value = remitente;
+				}		
+
+				var mbox = document.getElementById('message_box'+remitente);
+				alert(remitente);
+				$(mbox).append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
+
+			}
 		}
 		if(type == 'system')
 		{
-			$('#message_box').append("<div class=\"system_msg\">"+umsg+"</div>");
+			//$('#message_box').append("<div class=\"system_msg\">"+umsg+"</div>");
 			if(umsg.search("disconnected") == -1){
-				var ip = umsg.replace('connected', '');
-				var listUsers = $('<div>').attr('class','listUsers').attr('id',ip).append(ip);
+				var ip = umsg.replace('connected', '').trim();
+				var listUsers = $('<div>').attr('class','listUsers').attr('id',ip).append(ip).click(function(){
+					$('.chat_wrapper').hide();
+
+					var ventanaChat = $('<div>').attr('class', 'chat_wrapper').append(
+							$('<div>').attr('class', 'message_box').attr('id', 'message_box'+ip)
+						).append(
+							$('<div>').attr('class','panel').append(
+								$('<input>').attr('type', 'text').attr('name','Destinatario').attr('id','destino'+ip).attr('placeholder','Direccion ip destino')
+							).append(
+								$('<input>').attr('type', 'text').attr('name','message').attr('id','message'+ip).attr('placeholder','Mensaje').attr('maxlength', '80')
+
+							).append(
+								$('<input>').attr('type','button').attr('id','send-btn').attr('class', 'button').attr('value','Enviar').click(function(){
+									var mymessage = document.getElementById('message'+ip).value; //$('#message'+ip).val(); //get message text
+									var myname = '<?php echo $nUsuario; ?>';
+									var destino = document.getElementById('destino'+ip).value; //$('#destino'+ip).val(); //get user name
+									//alert(destino);
+									if(myname == ""){ //empty name?
+										alert("Enter your Name please!");
+										return;
+									}
+									if(mymessage == ""){ //emtpy message?
+										alert("Enter Some message Please!");
+										return;
+									}
+									//document.getElementById("destino").style.visibility = "hidden";
+									
+									var objDiv = document.getElementById("message_box"+ip);
+									objDiv.scrollTop = objDiv.scrollHeight;
+									//prepare json data
+									var msg = {
+									message: mymessage,
+									name: myname,
+									destinatary: destino,
+									remitent: myIP,
+									color : '<?php echo $colours[$user_colour]; ?>'
+									};
+									//convert and send data to server
+									websocket.send(JSON.stringify(msg));
+								})
+							)
+						);
+					
+					//var arrayChat = document.getElementsByClassName('chat_wrapper');
+					//alert(document.getElementById('c'+ip));
+					if(document.getElementById('c'+ip) != null){
+						//$('.chat_wrapper').attr('id','c'+ip).show();
+						document.getElementById('c'+ip).style.display = 'block';
+					}else{
+						//alert("body");
+						$('body').append(ventanaChat.attr('id','c'+ip));
+						//$('#destino'+ip).val(ip);
+						document.getElementById('destino'+ip).value = ip;
+						//$('body').append(chat.attr('id','c'+ip).show());
+					}
+				});
 				$('.users').attr('id','users').append(listUsers);
+				//$('body').append(listUsers);
 			}else{
 				var ip = umsg.replace('disconnected', '');
-				$(".listUsers").attr('id',ip).remove();
+				document.getElementById(ip).remove();
 			}			
-		}/** codigo de prueba || no funciono xd
-		if(type == 'allUsers'){
-			alert(umsg);
-		}*/
-		
-		$('#message').val(''); //reset text
-		
-		var objDiv = document.getElementById("message_box");
-		objDiv.scrollTop = objDiv.scrollHeight;
+		}
+
 	};
 
-	
-	
 	websocket.onerror	= function(ev){$('#message_box').append("<div class=\"system_error\">Error Occurred - "+ev.data+"</div>");}; 
 	websocket.onclose 	= function(ev){$('#message_box').append("<div class=\"system_msg\">Connection Closed</div>");}; 
+
 });
-
-
-
-
 </script>
 <div class="users"></div>
 <div class="chat_wrapper">
@@ -221,6 +329,6 @@ $(document).ready(function(){
 			onkeydown = "if (event.keyCode == 13)document.getElementById('send-btn').click()"  />
 		</div>
 		<button id="send-btn" class=button>Send</button>
-	</div>
+</div>
 </body>
 </html>
