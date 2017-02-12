@@ -125,7 +125,8 @@ $(document).ready(function(){
 		if(!ice || !ice.candidate || !ice.candidate.candidate)  return;
 		myIP = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1];
 		pc.onicecandidate = noop;	
-		$(".listUsers").attr('id',myIP).remove();	 
+		//$(".listUsers").attr('id',myIP).remove();	 
+		document.getElementById(myIP).remove();
 	};
 
 	//create a new WebSocket object.
@@ -140,11 +141,16 @@ $(document).ready(function(){
 	websocket.onopen = function(ev) { // connection is open 
 		$('#message_box').append("<div class=\"system_msg\">Connected!</div>"); //notify users
 	}
-/*
+
+	$('#salaChat').click(function(){
+		$('.chat_wrapper').hide();
+		$('#mainChat').show();
+	});
+
 	$('#send-btn').click(function(){ //use clicks message send button	
 		var mymessage = $('#message').val(); //get message text
 		var myname = '<?php echo $nUsuario; ?>';
-		var destino = $('#destino').val(); //get user name
+		var destino = 'todos'; //$('#destino').val(); //get user name
 		//alert(destino);
 		if(myname == ""){ //empty name?
 			alert("Enter your Name please!");
@@ -168,7 +174,7 @@ $(document).ready(function(){
 		};
 		//convert and send data to server
 		websocket.send(JSON.stringify(msg));
-	});*/
+	});
 	
 	//#### Message received from server?
 	websocket.onmessage = function(ev) {
@@ -187,12 +193,10 @@ $(document).ready(function(){
 		{
 			if(myIP == remitente){
 				var mbox = document.getElementById('message_box'+destino);
-				alert("destino "+destino);
+				//alert("destino "+destino);
 				$(mbox).append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
 				//$('#message_box').append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+remitente+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
 			}if(destino == myIP){				
-
-
 				var ventanaChat = $('<div>').attr('class', 'chat_wrapper').append(
 					$('<div>').attr('class', 'message_box').attr('id', 'message_box'+remitente)
 				).append(
@@ -233,15 +237,25 @@ $(document).ready(function(){
 				$('.chat_wrapper').hide();
 				if(document.getElementById('c'+remitente) != null){
 					document.getElementById('c'+remitente).style.display = 'block';
+
+					var changeName = document.getElementById(remitente);
+					$(changeName).empty().append(uname);
 				}else{
 					$('body').append(ventanaChat.attr('id','c'+remitente));
 					document.getElementById('destino'+remitente).value = remitente;
+					//alert("entro aca");
+					//alert(document.getElementById(remitente).innerHTML); /**Cambiar nombre de div por el del usuario */
+					var changeName = document.getElementById(remitente);
+					$(changeName).empty().append(uname);
+
 				}		
 
 				var mbox = document.getElementById('message_box'+remitente);
-				alert(remitente);
+				//alert(remitente);
 				$(mbox).append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
 
+			}if(destino == 'todos'){
+				$('#message_box').append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
 			}
 		}
 		if(type == 'system')
@@ -320,11 +334,15 @@ $(document).ready(function(){
 
 });
 </script>
-<div class="users"></div>
-<div class="chat_wrapper">
+<div class="users">
+	<div class="listUsers" id="salaChat">
+		Sala de Chat
+	</div>
+</div>
+<div class="chat_wrapper" id="mainChat">
 	<div class="message_box" id="message_box"></div>
 		<div class="panel">
-			<input type="text" name="Destinatario" id="destino" placeholder="Direccion ip destino">
+			<!--<input type="text" name="Destinatario" id="destino" placeholder="Direccion ip destino"> -->
 			<input type="text" name="message" id="message" placeholder="Message" maxlength="80" 
 			onkeydown = "if (event.keyCode == 13)document.getElementById('send-btn').click()"  />
 		</div>
