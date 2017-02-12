@@ -36,18 +36,20 @@ while (true) {
 		$header = socket_read($socket_new, 1024); //read data sent by the socket
 		perform_handshaking($header, $socket_new, $host, $port); //perform websocket handshake
 		
-		socket_getpeername($socket_new, $ip); //get ip address of connected socket
-		$response = mask(json_encode(array('type'=>'system', 'message'=>$ip.' connected'))); //prepare json data
-		send_systemMessage($response); //notify all users about new connection
+		socket_getpeername($socket_new, $clientIp); //get ip address of connected socket
+	//	$response = mask(json_encode(array('type'=>'system', 'message'=>$ip.' connected'))); //prepare json data
+//		send_systemMessage($response); //notify all users about new connection
 
 
-		/*Codigo de prueba || no funciono xd
+		//Codigo de prueba || no funciono xd
 		foreach ($clients as $socket_list) {
 			socket_getpeername($socket_list, $ip);
-			$list = $list."|".$ip;
-			$allClients = mask(json_encode(array('type'=>'allUsers', 'message'=>$list)));
-			send_systemMessage($allClients);
-		}*/
+			$list = $ip."|".$list;		
+		}
+		$allClients = mask(json_encode(array('type'=>'system', 'message'=>$clientIp.' connected','usersConnected'=>$list)));
+		$list = "";
+		send_systemMessage($allClients);
+
 		
 		//make room for new socket
 		$found_socket = array_search($socket, $changed);
@@ -101,13 +103,9 @@ function send_systemMessage($msg){
 function send_message($msg)
 {
 	global $clients;
-	$text = json_decode($msg);
 	foreach($clients as $changed_socket)
 	{
-		socket_getpeername($changed_socket, $ip);
-		$destino = $text->destinatary;	
-		if ($ip==$destino)
-			socket_write($changed_socket,$msg,strlen($msg));
+		@socket_write($changed_socket,$msg,strlen($msg));
 	}
 	return true;
 }
