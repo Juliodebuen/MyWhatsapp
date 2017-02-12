@@ -136,6 +136,16 @@ $(document).ready(function(){
 	  	return array.indexOf(element,index+1)<0
 	});
 
+	Array.prototype.clean = function( deleteValue ) {
+		for ( var i = 0, j = this.length ; i < j; i++ ) {
+			if ( this[ i ] == deleteValue ) {
+		    	this.splice( i, 1 );
+		      	i--;
+		    }
+		}
+		return this;
+	};
+
 	websocket.onopen = function(ev) { // Conexion abierta
 		$('#message_box').append("<div class=\"system_msg\">Connected!</div>"); //Notifica al usuario
 	}
@@ -251,19 +261,29 @@ $(document).ready(function(){
 			//$('#message_box').append("<div class=\"system_msg\">"+umsg+"</div>");
 			if(umsg.search("disconnected") == -1){
 				usersOnline = usersOnline.split('|');				
-				usersOnline = usersOnline.unique();
-				for(var i=0;i < usersOnline.length;i++){
-					alert(usersOnline);
-					var ip = umsg.replace('connected', '').trim();
-					if(document.getElementById(usersOnline[i]) == null && usersOnline[i] != ip && flag == false){						
-						var listUsers = createNewConversation(usersOnline[i]);
-						$('.users').attr('id','users').append(listUsers);
-						flag = true;
+				usersOnline = usersOnline.unique().clean("");
+				if(flag == false){
+					for(var i=0;i < usersOnline.length;i++){
+						//alert(usersOnline[i]);
+						var ip = umsg.replace('connected', '').trim();
+						if(document.getElementById(usersOnline[i]) == null && usersOnline[i] != ip){						
+							var listUsers = createNewConversation(usersOnline[i]);
+							$('.users').attr('id','users').append(listUsers);
+							flag = true;
+						}
 					}
+				}else{
+					var ip = umsg.replace('connected', '').trim();
+					if(document.getElementById(ip) == null){
+						var ip = umsg.replace('connected', '').trim();
+						var listUsers = createNewConversation(ip);
+						$('.users').attr('id','users').append(listUsers);
+					}					
 				}
 				
 			}else{
-				var ip = umsg.replace('disconnected', '');
+				var ip = umsg.replace('disconnected', '').trim();
+				//alert(document.getElementById(ip) +"  :"+ ip)
 				document.getElementById(ip).remove();
 			}			
 		}
