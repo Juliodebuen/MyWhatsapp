@@ -3,8 +3,8 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="/css/style.css">
-		<link rel="stylesheet" href="/css/flexboxgrid.css">
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/flexboxgrid.css">
 	</head>
 
 	<body>
@@ -61,7 +61,7 @@
 			};
 
 			websocket.onopen = function(ev) { // Conexion abierta
-				$('#message_box').append("<div class=\"system_msg\">Connected!</div>"); //Notifica al usuario
+				$('.div-chat').append("<div class=\"system_msg custom center-xs\">Estado: Conectado</div>"); //Notifica al usuario
 			}
 
 			$('#salaChat').click(function(){
@@ -70,6 +70,7 @@
 			});
 
 			$('#send-btn').click(function(){ //Accion de boton Enviar
+				window.scrollTo(0,document.body.scrollHeight); //para scrollear hacia abajo
 				var mymessage = $('#message').val(); //Obtiene el valor del input message
 				var myname = '<?php echo $nUsuario; ?>';
 				var destino = 'todos'; //etiqueta que indica sera enviado a todos los usuarios
@@ -82,11 +83,11 @@
 				objDiv.scrollTop = objDiv.scrollHeight;
 				//prepare json data
 				var msg = {
-				message: mymessage,
-				name: myname,
-				destinatary: destino,
-				remitent: myIP,
-				color : '<?php echo $colours[$user_colour]; ?>'
+					message: mymessage,
+					name: myname,
+					destinatary: destino,
+					remitent: myIP,
+					color : '<?php echo $colours[$user_colour]; ?>'
 				};
 				//convert and send data to server
 				websocket.send(JSON.stringify(msg));
@@ -154,7 +155,7 @@
 				{
 					if(myIP == remitente){
 						var mbox = document.getElementById('message_box'+destino);
-						$(mbox).append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
+						$(mbox).append("<div class=\"bubble\"><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div><br>");
 						//$('#message_box').append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+remitente+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
 					}if(destino == myIP){
 						var listUsers = null;
@@ -165,9 +166,9 @@
 						var changeName = document.getElementById(remitente);
 						$(changeName).empty().append(uname);
 						var mbox = document.getElementById('message_box'+remitente);
-						$(mbox).append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
+						$(mbox).append("<div class=\"bubble\"><span class=\"user_name mymsg\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div><br>");
 					}if(destino == 'todos'){
-						$('#message_box').append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
+						$('#message_box').append("<div class=\"bubble\"><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div><br>");
 					}
 				}
 				if(type == 'system')
@@ -209,19 +210,23 @@
 
 		});
 		</script>
-		<div class="users">
-			<div class="listUsers" id="salaChat">
-				Sala de Chat
-			</div>
-		</div>
-		<div class="chat_wrapper" id="mainChat">
-			<div class="message_box" id="message_box"></div>
-				<div class="panel">
-					<!--<input type="text" name="Destinatario" id="destino" placeholder="Direccion ip destino"> -->
-					<input type="text" name="message" id="message" placeholder="Escribe tu mensaje aquí" maxlength="80"
-					onkeydown = "if (event.keyCode == 13)document.getElementById('send-btn').click()"  />
+
+		<div class="row bg3">
+		    <div class="col-xs-3">
+		        <div class="box padding20 center-xs fjalla txt-clr">Sala de Chat</div>
+		    </div>
+			<div class="col-xs-9">
+		        <div class="box div-chat center-xs padding20 fjalla txt-clr">Chat</div>
+				<div class="chat_wrapper" id="mainChat">
+					<div class="message_box" id="message_box"></div>
+						<div class="div-send">
+							<!--<input type="text" name="Destinatario" id="destino" placeholder="Direccion ip destino"> -->
+							<input type="text" class="input-msg" autofocus="true" name="message" id="message" placeholder="Esribe un mensaje" maxlength="80"
+							onkeydown = "if (event.keyCode == 13)document.getElementById('send-btn').click()"  />
+							<button id="send-btn" class=button>Enviar</button>
+						</div>
 				</div>
-				<button id="send-btn" class=button>Enviar</button>
+		    </div>
 		</div>
 	</body>
 </html>

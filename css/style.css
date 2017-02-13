@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Anton|Fjalla+One');
+@import url('https://fonts.googleapis.com/css?family=Anton|Fjalla+One|Yanone+Kaffeesatz');
 
 *{
     margin: 0;
@@ -9,6 +9,8 @@
 
 .anton{    font-family: 'Anton', sans-serif;}
 
+.custom{    font-family: 'Yanone Kaffeesatz', sans-serif;}
+
 .bg{    background-color: #7f9eb2;}
 
 .bg1{    background-color: #77919d;}
@@ -18,6 +20,10 @@
 .bg3{    background-color: #274c5e;}
 
 .txt-clr{    color: #dae9f4;}
+
+.system_msg{    color: #03b40a}
+
+.padding20{    padding: 10px 20px}
 
 .txt-input{
     border: 0;
@@ -44,6 +50,53 @@
 .allbody{
      height:100vh;
      width: 100vw;
+}
+
+.red{
+    background-color: red;
+}
+
+.blue{
+    background-color: blue;
+}
+
+.div-send{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.system_msg{
+    background-color:
+}
+
+.mymsg{
+    float: right;
+}
+
+.chat_wrapper{
+    /*background-color: #77919d;
+    width: 100vh;
+    height: 80vw;*/
+}
+
+.input-msg{
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: #274c5e;
+    padding: 10px;
+    font-family: 'Anton', sans-serif;
+    color: #274c5e;
+    font-size: 20px;
+}
+
+.bubble{
+    border-radius: 5px;
+    background-color: rgb(245, 245, 245);
+    margin: 10px;
+    padding: 15px 5px;
+    display: inline-block;
 }
 
 /*
@@ -113,7 +166,7 @@ input[type=text]{
 .user_message{color: #88B6E0;}
 
 @media only screen and (max-width: 720px) {
-    
+
     .chat_wrapper {
         width: 95%;
 		height: 40%;
