@@ -39,7 +39,7 @@
 			};
 
 			//crea un objeto webSocket
-			var wsUri = "ws://192.168.20.207:9000/server.php";
+			var wsUri = "ws://192.168.19.189:9000/server.php";
 			websocket = new WebSocket(wsUri);
 
 			Array.prototype.unique=function(element){
@@ -96,6 +96,7 @@
 
 			function createNewConversation(ip){
 				var listUsers = $('<div>').attr('class','listUsers').attr('id',ip).append(ip).click(function(){
+					$(this).css("background-color","#7f9eb2");
 					$('.chat_wrapper').hide();
 					var ventanaChat = $('<div>').attr('class', 'chat_wrapper').append(
 						$('<div>').attr('class', 'message_box').attr('id', 'message_box'+ip)
@@ -103,7 +104,7 @@
 						$('<div>').attr('class','div-send').append(
 						//$('<input>').attr('type', 'text').attr('name','Destinatario').attr('id','destino'+ip).attr('placeholder','Direccion ip destino')
 					).append(
-						$('<input>').attr('type', 'text').attr('name','message').attr('id','message'+ip).attr('placeholder','Escribe un mensaje').attr('maxlength', '80').attr('class', 'input')
+						$('<input>').attr('type', 'text').attr('name','message').attr('id','message'+ip).attr('placeholder','Escribe un mensaje').attr('maxlength', '80').attr('class', 'input-msg')
 					).append(
 						$('<input>').attr('type','button').attr('id','send-btn').attr('class', 'button').attr('value','Enviar').click(function(){
 							var mymessage = document.getElementById('message'+ip).value; //$('#message'+ip).val(); //get message text
@@ -164,9 +165,9 @@
 							$('.users').attr('id','users').append(listUsers);
 						}
 						var changeName = document.getElementById(remitente);
-						$(changeName).empty().append(uname);
+						$(changeName).empty().append(uname).css("background-color","red");
 						var mbox = document.getElementById('message_box'+remitente);
-						$(mbox).append("<div class=\"bubble\"><span class=\"user_name mymsg\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div><br>");
+						$(mbox).append("<div class=\"bubble\"><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div><br>");
 					}if(destino == 'todos'){
 						$('#message_box').append("<div class=\"bubble\"><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div><br>");
 					}
