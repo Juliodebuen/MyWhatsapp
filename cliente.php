@@ -215,6 +215,9 @@
 		    <div class="col-xs-3">
 		        <div class="box padding20 center-xs fjalla txt-clr">Sala de Chat</div>
 		    </div>
+			<div class="listUsers" id="salaChat">
+				Sala de Chat
+			</div>
 			<div class="col-xs-9">
 		        <div class="box div-chat center-xs padding20 fjalla txt-clr">Chat</div>
 				<div class="chat_wrapper" id="mainChat">
