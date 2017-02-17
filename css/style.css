@@ -103,9 +103,9 @@
 }
 
 .chat_wrapper{
-    /*background-color: #77919d;
-    width: 100vh;
-    height: 80vw;*/
+    background-color: #FFF;
+    position: static;
+    overflow: hidden;
 }
 
 .input-msg{

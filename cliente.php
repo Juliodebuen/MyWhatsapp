@@ -212,7 +212,7 @@
 		});
 		</script>
 
-		<div class="row bg3 ">
+		<div class="row">
 		    <div class="col-xs-3">
 				<div class="users">
 					<div class="listUsers" id="salaChat">
@@ -221,16 +221,22 @@
 				</div>
 		    </div>
 			<div class="col-xs-9">
-		        <div class="box div-chat center-xs padding20 fjalla txt-clr">Chat</div>
+		        <div class="box div-chat center-xs padding20 fjalla txt-clr bg3">Chat</div>
 				<div class="chat_wrapper" id="mainChat">
 					<div class="message_box" id="message_box"></div>
-						<div class="div-send">
-							<input type="text" class="input-msg" autofocus="true" name="message" id="message" placeholder="Esribe un mensaje" maxlength="80"
-							onkeydown = "if (event.keyCode == 13)document.getElementById('send-btn').click()"  />
-							<button id="send-btn" class=button>Enviar</button>
-						</div>
+
 				</div>
 		    </div>
+
+		</div>
+		<div class="row">
+			<div class="col-xs-offset-3 col-xs-9">
+				<div class="div-send">
+					<input type="text" class="input-msg" autofocus="true" name="message" id="message" placeholder="Esribe un mensaje" maxlength="80"
+					onkeydown = "if (event.keyCode == 13)document.getElementById('send-btn').click()"  />
+					<button id="send-btn" class=button>Enviar</button>
+				</div>
+			</div>
 		</div>
 
 		<!-- <div class="users">
