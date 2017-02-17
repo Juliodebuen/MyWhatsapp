@@ -212,14 +212,14 @@
 		</script>
 
 		<div class="row bg3 ">
-		    <div class="col-xs-3">
+		    <div class="col-md-3 col-xs-12">
 				<div class="users">
 					<div class="listUsers" id="salaChat">
 						<div class="box padding20 center-xs fjalla txt-clr">Sala de Chat</div>
 					</div>
 				</div>
 		    </div>
-			<div class="col-xs-9">
+			<div class="col-md-9 col-xs-12">
 		        <div class="box div-chat center-xs padding20 fjalla txt-clr">Chat</div>
 				<div class="chat_wrapper" id="mainChat">
 					<div class="message_box" id="message_box"></div>
