@@ -27,9 +27,33 @@
 
 .padding20{    padding: 10px 20px}
 
+<<<<<<< HEAD
 /*.dmove{
     position: fixed;
 }*/
+=======
+#send-btn{
+  border-radius: 5px;
+  padding: 15px 25px;
+  font-size: 14px;
+  text-decoration: none;
+  margin: 5%;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+  background-color: #55acee;
+}
+
+#send-btn:active{
+  transform: translate(0px,5px);
+  -webkit-transform: translate(0px,5px);
+  box-shadow: 0px 1px 0px 0px;
+}
+
+#send-btn:hover{
+  background-color: #6FC6FF;
+}
+>>>>>>> 62b4e10c23d82da09123e87579ceb8fe209ffe88
 
 .txt-input{
     border: 0;
@@ -40,6 +64,10 @@
     font-family: 'Anton', sans-serif;
     color: #274c5e;
     font-size: 20px;
+}
+
+::-webkit-input-placeholder{
+  color: #2C3E50;
 }
 
 .btn{
@@ -77,11 +105,18 @@
 }
 
 .mymsg{
-    float: right;
+    align-items: right;
 }
 
+<<<<<<< HEAD
 .message_box{
     /*overflow-y: scroll;*/
+=======
+.chat_wrapper{
+    background-color: #FFF;
+    position: static;
+    overflow: hidden;
+>>>>>>> 62b4e10c23d82da09123e87579ceb8fe209ffe88
 }
 
 .input-msg{
