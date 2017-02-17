@@ -39,7 +39,7 @@
 			};
 
 			//crea un objeto webSocket
-			var wsUri = "ws://192.168.1.71:9000/server.php";
+			var wsUri = "ws://192.168.20.207:9000/server.php";
 			websocket = new WebSocket(wsUri);
 
 			Array.prototype.unique=function(element){
