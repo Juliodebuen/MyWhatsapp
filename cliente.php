@@ -100,10 +100,10 @@
 					var ventanaChat = $('<div>').attr('class', 'chat_wrapper').append(
 						$('<div>').attr('class', 'message_box').attr('id', 'message_box'+ip)
 					).append(
-						$('<div>').attr('class','panel').append(
+						$('<div>').attr('class','div-send').append(
 						//$('<input>').attr('type', 'text').attr('name','Destinatario').attr('id','destino'+ip).attr('placeholder','Direccion ip destino')
 					).append(
-						$('<input>').attr('type', 'text').attr('name','message').attr('id','message'+ip).attr('placeholder','Escribe tu mensaje aquí').attr('maxlength', '80')
+						$('<input>').attr('type', 'text').attr('name','message').attr('id','message'+ip).attr('placeholder','Escribe un mensaje').attr('maxlength', '80').attr('class', 'input')
 					).append(
 						$('<input>').attr('type','button').attr('id','send-btn').attr('class', 'button').attr('value','Enviar').click(function(){
 							var mymessage = document.getElementById('message'+ip).value; //$('#message'+ip).val(); //get message text
@@ -155,7 +155,7 @@
 				{
 					if(myIP == remitente){
 						var mbox = document.getElementById('message_box'+destino);
-						$(mbox).append("<div class=\"bubble\"><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div><br>");
+						$(mbox).append("<div class=\"bubble\"><span class=\"user_name \" style=\"color:#"+ucolor+"\">"+uname+"</span> : <span class=\"user_message\">"+umsg+"</span></div><br>");
 						//$('#message_box').append("<div><span class=\"user_name\" style=\"color:#"+ucolor+"\">"+remitente+"</span> : <span class=\"user_message\">"+umsg+"</span></div>");
 					}if(destino == myIP){
 						var listUsers = null;
@@ -211,19 +211,19 @@
 		});
 		</script>
 
-		<div class="row bg3">
+		<div class="row bg3 ">
 		    <div class="col-xs-3">
-		        <div class="box padding20 center-xs fjalla txt-clr">Sala de Chat</div>
+				<div class="users">
+					<div class="listUsers" id="salaChat">
+						<div class="box padding20 center-xs fjalla txt-clr">Sala de Chat</div>
+					</div>
+				</div>
 		    </div>
-			<div class="listUsers" id="salaChat">
-				Sala de Chat
-			</div>
 			<div class="col-xs-9">
 		        <div class="box div-chat center-xs padding20 fjalla txt-clr">Chat</div>
 				<div class="chat_wrapper" id="mainChat">
 					<div class="message_box" id="message_box"></div>
 						<div class="div-send">
-							<!--<input type="text" name="Destinatario" id="destino" placeholder="Direccion ip destino"> -->
 							<input type="text" class="input-msg" autofocus="true" name="message" id="message" placeholder="Esribe un mensaje" maxlength="80"
 							onkeydown = "if (event.keyCode == 13)document.getElementById('send-btn').click()"  />
 							<button id="send-btn" class=button>Enviar</button>
@@ -231,5 +231,20 @@
 				</div>
 		    </div>
 		</div>
+
+		<!-- <div class="users">
+			<div class="listUsers" id="salaChat">
+				Sala de Chat
+			</div>
+		</div>
+		<div class="chat_wrapper" id="mainChat">
+			<div class="message_box" id="message_box"></div>
+				<div class="panel">
+					<input type="text" name="message" id="message" placeholder="Escribe tu mensaje aquí" maxlength="80"
+					onkeydown = "if (event.keyCode == 13)document.getElementById('send-btn').click()"  />
+				</div>
+				<button id="send-btn" class=button>Enviar</button>
+		</div> -->
+
 	</body>
 </html>
