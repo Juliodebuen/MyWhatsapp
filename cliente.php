@@ -39,7 +39,7 @@
 			};
 
 			//crea un objeto webSocket
-			var wsUri = "ws://192.168.19.189:9000/server.php";
+			var wsUri = "ws://192.168.1.71:9000/server.php";
 			websocket = new WebSocket(wsUri);
 
 			Array.prototype.unique=function(element){
@@ -72,6 +72,7 @@
 			$('#send-btn').click(function(){ //Accion de boton Enviar
 				window.scrollTo(0,document.body.scrollHeight); //para scrollear hacia abajo
 				var mymessage = $('#message').val(); //Obtiene el valor del input message
+                mymessage = mymessage.replace(/</g, "&lt;").replace(/>/g, "&gt;");//evitar injección html/js
 				var myname = '<?php echo $nUsuario; ?>';
 				var destino = 'todos'; //etiqueta que indica sera enviado a todos los usuarios
 				if(mymessage == ""){ //emtpy message?
@@ -213,17 +214,17 @@
 		</script>
 
 
-		<div class="row bg3 ">
+		<div class="row">
 		    <div class="col-md-3 col-xs-12">
 
 				<div class="users">
 					<div class="listUsers" id="salaChat">
-						<div class="box padding20 center-xs fjalla txt-clr">Sala de Chat</div>
+						<div class="box padding20 center-xs fjalla txt-clr bg3">Sala de Chat</div>
 					</div>
 				</div>
 		    </div>
 			<div class="col-md-9 col-xs-12">
-		        <div class="box div-chat center-xs padding20 fjalla txt-clr">Chat</div>
+		        <div class="box div-chat center-xs padding20 fjalla txt-clr bg3">Chat</div>
 
 				<div class="chat_wrapper" id="mainChat">
 					<div class="message_box" id="message_box"></div>

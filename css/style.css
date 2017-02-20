@@ -1,4 +1,4 @@
-3FFFFF7f9eb2@import url('https://fonts.googleapis.com/css?family=Anton|Fjalla+One|Yanone+Kaffeesatz');
+@import url('https://fonts.googleapis.com/css?family=Anton|Fjalla+One|Yanone+Kaffeesatz');
 
 *{
     margin: 0;
@@ -27,11 +27,6 @@
 
 .padding20{    padding: 10px 20px}
 
-<<<<<<< HEAD
-/*.dmove{
-    position: fixed;
-}*/
-=======
 #send-btn{
   border-radius: 5px;
   padding: 15px 25px;
@@ -53,7 +48,6 @@
 #send-btn:hover{
   background-color: #6FC6FF;
 }
->>>>>>> 62b4e10c23d82da09123e87579ceb8fe209ffe88
 
 .txt-input{
     border: 0;
@@ -108,15 +102,10 @@
     align-items: right;
 }
 
-<<<<<<< HEAD
-.message_box{
-    /*overflow-y: scroll;*/
-=======
 .chat_wrapper{
     background-color: #FFF;
-    position: static;
-    overflow: hidden;
->>>>>>> 62b4e10c23d82da09123e87579ceb8fe209ffe88
+    height: 80vh;
+    overflow-y: scroll;
 }
 
 .input-msg{
@@ -145,83 +134,3 @@
     font-size: 20px;
     text-align: center;
 }
-
-/*
-.panel{
-	margin-right: 3px;
-}
-
-.users{
-	position: absolute;
-	width: 200px;
-	height:500px;
-	display: inline-block;
-}
-
-.listUsers{
-	width: 200px;
-	height: 30px;
-	background-color: red;
-	position:relative;
-}
-
-
-.button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-	margin-right: 30%;
-	margin-left: 30%;
-    text-decoration: none;
-    display: block;
-    font-size: 16px;
-    cursor: pointer;
-	width:30%;
-    height:40px;
-	margin-top: 5px;
-
-}
-input[type=text]{
-		width:100%;
-		margin-top:5px;
-
-	}
-
-
-.chat_wrapper {
-	width: 70%;
-	height:472px;
-	margin-right: auto;
-	margin-left: auto;
-	background: #3B5998;
-	border: 1px solid #999999;
-	padding: 10px;
-	font: 14px 'lucida grande',tahoma,verdana,arial,sans-serif;
-}
-.chat_wrapper .message_box {
-	background: #F7F7F7;
-	height:350px;
-		overflow: auto;
-	padding: 10px 10px 20px 10px;
-	border: 1px solid #999999;
-}
-.chat_wrapper  input{
-	//padding: 2px 2px 2px 5px;
-}
-.system_msg{color: #BDBDBD;font-style: italic;}
-.user_name{font-weight:bold;}
-.user_message{color: #88B6E0;}
-
-@media only screen and (max-width: 720px) {
-
-    .chat_wrapper {
-        width: 95%;
-		height: 40%;
-	}
-
-
-	.button{ width:100%;
-	margin-right:auto;
-	margin-left:auto;
-	height:40px;}
-}*/
